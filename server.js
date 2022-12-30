@@ -1,6 +1,4 @@
 const express = require("express");
-const cluster = require("cluster");
-const os = require("os");
 
 const app = express();
 
@@ -21,18 +19,6 @@ app.get("/timer", (req, res) => {
 });
 
 console.log("Running server.js...");
-if (cluster.isMaster) {
-  console.log("Master has been started...");
-  const NUM_WORKERS = os.cpus().length;
 
-  //create the amount of worker processes which maximizes the usage of cores in my machine
-    for (let i = 0; i < NUM_WORKERS; i++) {
-        cluster.fork()
-    }
-
-  cluster.fork();
-  cluster.fork();
-} else {
-  console.log("Worker process started.");
-  app.listen(3000);
-}
+console.log("Worker process started.");
+app.listen(3000);
